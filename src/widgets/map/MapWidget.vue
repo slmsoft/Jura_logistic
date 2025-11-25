@@ -6,23 +6,76 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, watch } from 'vue'
-import maplibregl from 'maplibre-gl'
-import 'maplibre-gl/dist/maplibre-gl.css'
 import axios from 'axios'
 import { useOrdersStore } from '@entities/order/store'
 import type { Order } from '@entities/order/types'
 
+// Lazy load MapLibre GL для оптимизации начальной загрузки
+let maplibregl: any = null
+let mapLibreCssLoaded = false
+
+async function loadMapLibre() {
+  if (!maplibregl) {
+    const module = await import('maplibre-gl')
+    maplibregl = module.default
+    if (!mapLibreCssLoaded) {
+      // Динамически загружаем CSS
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = 'https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css'
+      document.head.appendChild(link)
+      mapLibreCssLoaded = true
+    }
+  }
+  return maplibregl
+}
+
 const mapContainer = ref<HTMLDivElement | null>(null)
-const map = ref<maplibregl.Map | null>(null)
-const markers = ref<maplibregl.Marker[]>([])
-const popups = ref<maplibregl.Popup[]>([])
+const map = ref<any>(null)
+const markers = ref<any[]>([])
 const routeSourceId = 'route-source'
 const routeLayerId = 'route-layer'
 
 const store = useOrdersStore()
 
-onMounted(() => {
+// Debounce функция для оптимизации обновлений
+let updateMarkersTimeout: ReturnType<typeof setTimeout> | null = null
+let updateRoutesTimeout: ReturnType<typeof setTimeout> | null = null
+
+function debounceUpdateMarkers() {
+  if (updateMarkersTimeout) {
+    clearTimeout(updateMarkersTimeout)
+  }
+  updateMarkersTimeout = setTimeout(() => {
+    if (map.value && map.value.loaded()) {
+      updateMarkers()
+      fitMapToFilteredOrders()
+    }
+  }, 150) // 150ms debounce
+}
+
+function debounceUpdateRoutes() {
+  if (updateRoutesTimeout) {
+    clearTimeout(updateRoutesTimeout)
+  }
+  updateRoutesTimeout = setTimeout(() => {
+    if (map.value) {
+      if (map.value.loaded()) {
+        updateRoutes()
+      } else {
+        map.value.once('load', () => {
+          updateRoutes()
+        })
+      }
+    }
+  }, 100) // 100ms debounce
+}
+
+onMounted(async () => {
   if (mapContainer.value) {
+    // Загружаем MapLibre GL асинхронно
+    const maplibregl = await loadMapLibre()
+    
     map.value = new maplibregl.Map({
       container: mapContainer.value,
       style: 'https://demotiles.maplibre.org/globe.json',
@@ -38,37 +91,32 @@ onMounted(() => {
 })
 
 watch(() => store.filteredOrders, () => {
-  if (map.value && map.value.loaded()) {
-    updateMarkers()
-    // Автоматически центрируем карту на отфильтрованных заказах
-    fitMapToFilteredOrders()
-  }
+  debounceUpdateMarkers()
 }, { deep: true })
 
 watch(() => store.selectedOrderIds, () => {
-  if (map.value) {
-    // Ждем загрузки карты перед построением маршрутов
-    if (map.value.loaded()) {
-      updateRoutes()
-    } else {
-      map.value.once('load', () => {
-        updateRoutes()
-      })
-    }
-  }
+  debounceUpdateRoutes()
 }, { deep: true })
 
 onUnmounted(() => {
+  if (updateMarkersTimeout) {
+    clearTimeout(updateMarkersTimeout)
+  }
+  if (updateRoutesTimeout) {
+    clearTimeout(updateRoutesTimeout)
+  }
   clearMarkers()
   if (map.value) {
     map.value.remove()
   }
 })
 
-function updateMarkers() {
+async function updateMarkers() {
   clearMarkers()
 
   if (!map.value) return
+  
+  const maplibregl = await loadMapLibre()
 
   store.filteredOrders.forEach((order) => {
     // Pickup marker
@@ -78,7 +126,7 @@ function updateMarkers() {
       anchor: 'bottom'
     })
       .setLngLat([order.pickup.lng, order.pickup.lat])
-      .setPopup(createPopup(order, 'pickup'))
+      .setPopup(createPopup(order, 'pickup', maplibregl))
       .addTo(map.value!)
 
     markers.value.push(pickupMarker)
@@ -90,7 +138,7 @@ function updateMarkers() {
       anchor: 'bottom'
     })
       .setLngLat([order.delivery.lng, order.delivery.lat])
-      .setPopup(createPopup(order, 'delivery'))
+      .setPopup(createPopup(order, 'delivery', maplibregl))
       .addTo(map.value!)
 
     markers.value.push(deliveryMarker)
@@ -124,7 +172,7 @@ function createMarkerElement(type: 'pickup' | 'delivery') {
   return el
 }
 
-function createPopup(order: Order, type: 'pickup' | 'delivery') {
+function createPopup(order: Order, type: 'pickup' | 'delivery', maplibregl: any) {
   const city = type === 'pickup' ? order.sender_city : order.receiver_city
   const locationType = type === 'pickup' ? 'Погрузка' : 'Выгрузка'
   const statusColors: Record<string, string> = {
@@ -247,6 +295,7 @@ async function updateRoutes() {
     return
   }
 
+  const maplibregl = await loadMapLibre()
   const selectedOrders = store.selectedOrders
 
   // Удаляем все существующие маршруты и метки расстояний
@@ -375,9 +424,10 @@ async function updateRoutes() {
   }
 }
 
-function fitMapToRoutes(orders: Order[]) {
+async function fitMapToRoutes(orders: Order[]) {
   if (!map.value || orders.length === 0) return
 
+  const maplibregl = await loadMapLibre()
   const bounds = new maplibregl.LngLatBounds()
 
   orders.forEach((order) => {
@@ -391,7 +441,7 @@ function fitMapToRoutes(orders: Order[]) {
   })
 }
 
-function fitMapToFilteredOrders() {
+async function fitMapToFilteredOrders() {
   if (!map.value || !map.value.loaded()) return
 
   const filteredOrders = store.filteredOrders
@@ -406,6 +456,7 @@ function fitMapToFilteredOrders() {
     return
   }
 
+  const maplibregl = await loadMapLibre()
   const bounds = new maplibregl.LngLatBounds()
 
   filteredOrders.forEach((order) => {

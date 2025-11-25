@@ -33,14 +33,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router'
 import { useOrdersStore } from '@entities/order/store'
 import Sidebar from '../../components/Sidebar.vue'
-import OrdersTable from '@widgets/orders-table/OrdersTable.vue'
-import EditOrderModal from '@features/orders/EditOrderModal.vue'
-import Toast from '@shared/ui/Toast/Toast.vue'
 import type { Order } from '@entities/order/types'
+
+// Lazy loading для тяжелых компонентов
+const OrdersTable = defineAsyncComponent(() => import('@widgets/orders-table/OrdersTable.vue'))
+const EditOrderModal = defineAsyncComponent(() => import('@features/orders/EditOrderModal.vue'))
+const Toast = defineAsyncComponent(() => import('@shared/ui/Toast/Toast.vue'))
 
 const router = useRouter()
 
@@ -85,9 +87,12 @@ function closeToast() {
 }
 
 function handleNavigateToMap(orderId: number) {
-  // Переходим на страницу с картой
-  router.push('/')
-  // Заказ уже выделен через toggleSelection в таблице
+  // Переходим на страницу с картой с query параметром
+  // Выделение заказа произойдет на странице карты через обработку query параметра
+  router.push({
+    path: '/',
+    query: { orderId: orderId.toString() }
+  })
 }
 </script>
 

@@ -35,15 +35,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineAsyncComponent, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useOrdersStore } from '@entities/order/store'
 import Sidebar from '../../components/Sidebar.vue'
-import OrdersCards from '@widgets/orders-cards/OrdersCards.vue'
-import MapWidget from '@widgets/map/MapWidget.vue'
-import EditOrderModal from '@features/orders/EditOrderModal.vue'
-import Toast from '@shared/ui/Toast/Toast.vue'
 import type { Order } from '@entities/order/types'
 
+// Lazy loading для тяжелых компонентов
+const OrdersCards = defineAsyncComponent(() => import('@widgets/orders-cards/OrdersCards.vue'))
+const MapWidget = defineAsyncComponent(() => import('@widgets/map/MapWidget.vue'))
+const EditOrderModal = defineAsyncComponent(() => import('@features/orders/EditOrderModal.vue'))
+const Toast = defineAsyncComponent(() => import('@shared/ui/Toast/Toast.vue'))
+
+const route = useRoute()
 const store = useOrdersStore()
 const isModalOpen = ref(false)
 const selectedOrder = ref<Order | null>(null)
@@ -51,8 +55,43 @@ const toastMessage = ref('')
 const toastType = ref<'success' | 'error'>('success')
 const showToast = ref(false)
 
+function handleOrderIdFromQuery() {
+  const orderIdParam = route.query.orderId
+  if (orderIdParam) {
+    const orderId = parseInt(orderIdParam as string, 10)
+    if (!isNaN(orderId)) {
+      // Очищаем все выделения и выделяем только нужный заказ
+      store.selectedOrderIds = []
+      const order = store.orders.find(o => o.id === orderId)
+      if (order) {
+        store.toggleOrderSelection(orderId)
+      }
+    }
+  }
+}
+
 onMounted(() => {
-  store.fetchOrders()
+  store.fetchOrders().then(() => {
+    // Проверяем query параметр для выделения заказа после загрузки
+    handleOrderIdFromQuery()
+  })
+  
+  // Если заказы уже загружены, сразу обрабатываем query
+  if (store.orders.length > 0) {
+    handleOrderIdFromQuery()
+  }
+})
+
+// Отслеживаем изменения query параметра
+watch(() => route.query.orderId, () => {
+  handleOrderIdFromQuery()
+})
+
+// Отслеживаем загрузку заказов
+watch(() => store.orders.length, () => {
+  if (store.orders.length > 0 && route.query.orderId) {
+    handleOrderIdFromQuery()
+  }
 })
 
 function handleOrderSelected(order: Order) {

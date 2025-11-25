@@ -229,11 +229,8 @@ const emit = defineEmits<{
 }>()
 
 function handleOrderIdClick(order: Order) {
-  // Выделяем заказ
-  if (!isSelected(order.id)) {
-    toggleSelection(order.id)
-  }
   // Переходим на страницу с картой
+  // Выделение заказа произойдет на странице карты через query параметр
   emit('navigateToMap', order.id)
 }
 </script>

@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import OrdersPage from '@pages/orders/OrdersPage.vue'
-import OrdersTablePage from '@pages/orders-table/OrdersTablePage.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -8,12 +6,12 @@ const router = createRouter({
     {
       path: '/',
       name: 'orders',
-      component: OrdersPage
+      component: () => import('@pages/orders/OrdersPage.vue')
     },
     {
       path: '/orders-table',
       name: 'orders-table',
-      component: OrdersTablePage
+      component: () => import('@pages/orders-table/OrdersTablePage.vue')
     }
   ]
 })

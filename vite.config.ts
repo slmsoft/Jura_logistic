@@ -26,7 +26,40 @@ export default defineConfig({
     commonjsOptions: {
       include: [/maplibre-gl/, /node_modules/],
       transformMixedEsModules: true
-    }
+    },
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          // Выделяем MapLibre GL в отдельный chunk (большая библиотека)
+          'maplibre-gl': ['maplibre-gl'],
+          // Выделяем Vue Router в отдельный chunk
+          'vue-router': ['vue-router'],
+          // Выделяем Pinia в отдельный chunk
+          'pinia': ['pinia'],
+          // Выделяем Axios в отдельный chunk
+          'axios': ['axios'],
+          // Выделяем Vue в отдельный chunk
+          'vue-core': ['vue']
+        },
+        // Оптимизация имен файлов для лучшего кеширования
+        chunkFileNames: 'assets/[name]-[hash].js',
+        entryFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+        pure_funcs: ['console.log', 'console.info', 'console.debug']
+      }
+    },
+    // Включаем source maps только для разработки
+    sourcemap: false,
+    // Оптимизация размера
+    cssCodeSplit: true
   },
   server: {
     fs: {
