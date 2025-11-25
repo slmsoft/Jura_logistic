@@ -1,0 +1,252 @@
+[
+  {
+    "id": 5021,
+    "sender_city": "Москва",
+    "receiver_city": "Казань",
+    "pickup": { "lat": 55.7512, "lng": 37.6184 },
+    "delivery": { "lat": 55.7887, "lng": 49.1221 },
+    "status": "Новый",
+    "date": "2024-04-11",
+    "weight": 15,
+    "sender_address": {
+      "street": "ул. Ленина, 2972",
+      "full": "г. Москва, Московская область, 123456"
+    },
+    "receiver_address": {
+      "street": "пр-т Мира, 8502",
+      "full": "г. Казань, Республика Татарстан, 420000"
+    },
+    "item_type": "Продукты питания",
+    "client": {
+      "name": "Дмитрий Степанов",
+      "company": "Мариен, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": true
+  },
+  {
+    "id": 5022,
+    "sender_city": "Санкт-Петербург",
+    "receiver_city": "Москва",
+    "pickup": { "lat": 59.9343, "lng": 30.3351 },
+    "delivery": { "lat": 55.7558, "lng": 37.6173 },
+    "status": "В пути",
+    "date": "2024-04-12",
+    "weight": 25,
+    "sender_address": {
+      "street": "Невский пр-т, 28",
+      "full": "г. Санкт-Петербург, Ленинградская область, 191186"
+    },
+    "receiver_address": {
+      "street": "ул. Тверская, д. 10",
+      "full": "г. Москва, Московская область, 101000"
+    },
+    "item_type": "Продукты питания",
+    "client": {
+      "name": "Елена Вильсон",
+      "company": "Фуд Стейт, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/a9f0a8b5-b911-4610-94e3-8f061a97e12c"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5023,
+    "sender_city": "Казань",
+    "receiver_city": "Нижний Новгород",
+    "pickup": { "lat": 55.7887, "lng": 49.1221 },
+    "delivery": { "lat": 56.2965, "lng": 43.9361 },
+    "status": "Новый",
+    "date": "2024-04-13",
+    "weight": 30,
+    "sender_address": {
+      "street": "ул. Баумана, 58",
+      "full": "г. Казань, Республика Татарстан, 420000"
+    },
+    "receiver_address": {
+      "street": "ул. Большая Покровская, 1",
+      "full": "г. Нижний Новгород, Нижегородская область, 603000"
+    },
+    "item_type": "Продукты питания",
+    "client": {
+      "name": "Александр Петров",
+      "company": "Мариен, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5024,
+    "sender_city": "Новосибирск",
+    "receiver_city": "Екатеринбург",
+    "pickup": { "lat": 55.0084, "lng": 82.9357 },
+    "delivery": { "lat": 56.8431, "lng": 60.6454 },
+    "status": "Новый",
+    "date": "2024-04-14",
+    "weight": 18,
+    "sender_address": {
+      "street": "ул. Красный проспект, 50",
+      "full": "г. Новосибирск, Новосибирская область, 630000"
+    },
+    "receiver_address": {
+      "street": "ул. Ленина, 50А",
+      "full": "г. Екатеринбург, Свердловская область, 620000"
+    },
+    "item_type": "Электроника",
+    "client": {
+      "name": "Иван Смирнов",
+      "company": "ТехноПлюс, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": true
+  },
+  {
+    "id": 5025,
+    "sender_city": "Санкт-Петербург",
+    "receiver_city": "Казань",
+    "pickup": { "lat": 59.9343, "lng": 30.3351 },
+    "delivery": { "lat": 55.7887, "lng": 49.1221 },
+    "status": "В пути",
+    "date": "2024-04-15",
+    "weight": 12,
+    "sender_address": {
+      "street": "Невский пр-т, 100",
+      "full": "г. Санкт-Петербург, Ленинградская область, 191186"
+    },
+    "receiver_address": {
+      "street": "ул. Баумана, 58",
+      "full": "г. Казань, Республика Татарстан, 420000"
+    },
+    "item_type": "Одежда",
+    "client": {
+      "name": "Мария Козлова",
+      "company": "Мода Стиль, ИП",
+      "avatar": "https://www.figma.com/api/mcp/asset/a9f0a8b5-b911-4610-94e3-8f061a97e12c"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5026,
+    "sender_city": "Екатеринбург",
+    "receiver_city": "Новосибирск",
+    "pickup": { "lat": 56.8431, "lng": 60.6454 },
+    "delivery": { "lat": 55.0084, "lng": 82.9357 },
+    "status": "Доставлен",
+    "date": "2024-04-13",
+    "weight": 22,
+    "sender_address": {
+      "street": "ул. Ленина, 50А",
+      "full": "г. Екатеринбург, Свердловская область, 620000"
+    },
+    "receiver_address": {
+      "street": "ул. Красный проспект, 50",
+      "full": "г. Новосибирск, Новосибирская область, 630000"
+    },
+    "item_type": "Мебель",
+    "client": {
+      "name": "Сергей Волков",
+      "company": "МебельМаркет, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5027,
+    "sender_city": "Москва",
+    "receiver_city": "Казань",
+    "pickup": { "lat": 55.7558, "lng": 37.6173 },
+    "delivery": { "lat": 55.7887, "lng": 49.1221 },
+    "status": "В пути",
+    "date": "2024-04-14",
+    "weight": 20,
+    "sender_address": {
+      "street": "ул. Тверская, д. 10",
+      "full": "г. Москва, Московская область, 101000"
+    },
+    "receiver_address": {
+      "street": "ул. Баумана, 58",
+      "full": "г. Казань, Республика Татарстан, 420000"
+    },
+    "item_type": "Продукты питания",
+    "client": {
+      "name": "Ольга Новикова",
+      "company": "Фуд Стейт, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/a9f0a8b5-b911-4610-94e3-8f061a97e12c"
+    },
+    "has_notification": true
+  },
+  {
+    "id": 5028,
+    "sender_city": "Нижний Новгород",
+    "receiver_city": "Москва",
+    "pickup": { "lat": 56.2965, "lng": 43.9361 },
+    "delivery": { "lat": 55.7558, "lng": 37.6173 },
+    "status": "Доставлен",
+    "date": "2024-04-11",
+    "weight": 28,
+    "sender_address": {
+      "street": "ул. Большая Покровская, 1",
+      "full": "г. Нижний Новгород, Нижегородская область, 603000"
+    },
+    "receiver_address": {
+      "street": "ул. Тверская, д. 10",
+      "full": "г. Москва, Московская область, 101000"
+    },
+    "item_type": "Строительные материалы",
+    "client": {
+      "name": "Андрей Морозов",
+      "company": "СтройМатериалы, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5029,
+    "sender_city": "Краснодар",
+    "receiver_city": "Ростов-на-Дону",
+    "pickup": { "lat": 45.0355, "lng": 38.9753 },
+    "delivery": { "lat": 47.2357, "lng": 39.7015 },
+    "status": "Новый",
+    "date": "2024-04-16",
+    "weight": 16,
+    "sender_address": {
+      "street": "ул. Красная, 122",
+      "full": "г. Краснодар, Краснодарский край, 350000"
+    },
+    "receiver_address": {
+      "street": "пр-т Буденновский, 50",
+      "full": "г. Ростов-на-Дону, Ростовская область, 344000"
+    },
+    "item_type": "Продукты питания",
+    "client": {
+      "name": "Елена Соколова",
+      "company": "Мариен, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/a9f0a8b5-b911-4610-94e3-8f061a97e12c"
+    },
+    "has_notification": false
+  },
+  {
+    "id": 5030,
+    "sender_city": "Самара",
+    "receiver_city": "Уфа",
+    "pickup": { "lat": 53.2001, "lng": 50.15 },
+    "delivery": { "lat": 54.7431, "lng": 55.9678 },
+    "status": "Новый",
+    "date": "2024-04-17",
+    "weight": 14,
+    "sender_address": {
+      "street": "ул. Московское шоссе, 18",
+      "full": "г. Самара, Самарская область, 443000"
+    },
+    "receiver_address": {
+      "street": "ул. Ленина, 50",
+      "full": "г. Уфа, Республика Башкортостан, 450000"
+    },
+    "item_type": "Электроника",
+    "client": {
+      "name": "Дмитрий Лебедев",
+      "company": "ТехноПлюс, ООО",
+      "avatar": "https://www.figma.com/api/mcp/asset/e55a753b-1587-4885-8b69-2c6915c23b0b"
+    },
+    "has_notification": true
+  }
+]
